@@ -1,26 +1,40 @@
-window.leica = {
-  suites: [],
-  
-  run: function(runner) {
-    for (var i = 0; i < this.suites.length; i++) {
-      var suite = this.suites[i];
-      runner.writeSuite(suite.description);
+window.leica = {  
+  runner: {
+    writeSuite: function(description) {
+      var featureHeader = document.createElement('h2');
+      featureHeader.setAttribute('class', 'feature');
+      featureHeader.innerHTML = description + ":";
+      document.getElementById("results").appendChild(featureHeader);
+    },
 
-      for (var feature in suite.testObject) {
-        var test = suite.testObject[feature];
-
-        if (test != suite.testObject.setup) {
-          var result = suite.testObject.setup(test);
-          runner.writeFeature(feature, result);
-        }
+    writeFeature: function(description, result) { 
+      var descriptionText = description + "... ";
+      var resultText = result ? "Passed" : "Failed";
+      var resultClass = result ? "pass" : "fail";
+                
+      var resultElement = document.createElement('p');
+      resultElement.setAttribute('class', 'result ' + resultClass);
+      resultElement.innerHTML = descriptionText + resultText;
+      document.getElementById("results").appendChild(resultElement);
+    },
+    
+    tests: function(func) {
+      window.onload = function() {
+        func();
       }
     }
   }
 };
 
 window.describe = function(description, testObject) {
-  window.leica.suites.push({
-    description: description,
-    testObject: testObject
-  });
+  window.leica.runner.writeSuite(description);
+
+  for (var feature in testObject) {
+    var test = testObject[feature];
+
+    if (test != testObject.setup) {
+      var result = testObject.setup(test);
+      window.leica.runner.writeFeature(feature, result);
+    }
+  }
 };
