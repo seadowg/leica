@@ -1,6 +1,11 @@
 <html>
     <head>
       <title>Leica Test Runner</title>
+        <style type="text/css">
+          .result { margin-left: 20px; }
+          .result.pass { color: green; }
+          .result.fail { color: red; }
+        </style>
         <script type="text/javascript" src="leica.js"></script>
         <script type="text/javascript" src="example.js"></script>
         <script type="text/javascript">
@@ -8,17 +13,18 @@
 				    window.leica.run({
               writeSuite: function(description) {
                 var featureHeader = document.createElement('h2');
-                featureHeader.setAttribute('class', 'feature')
-                featureHeader.innerHTML = description + ":"
+                featureHeader.setAttribute('class', 'feature');
+                featureHeader.innerHTML = description + ":";
                 document.getElementById("results").appendChild(featureHeader);
               },
 
               writeFeature: function(description, result) { 
                 var descriptionText = description + "... ";
                 var resultText = result ? "Passed" : "Failed";
+                var resultClass = result ? "pass" : "fail";
                 
                 var resultElement = document.createElement('p');
-                resultElement.setAttribute('class', 'result')
+                resultElement.setAttribute('class', 'result ' + resultClass);
                 resultElement.innerHTML = descriptionText + resultText;
                 document.getElementById("results").appendChild(resultElement);
               }

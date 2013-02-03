@@ -4,10 +4,10 @@ describe("Maths", {
   },
   
   "can do addition": function() {
-    return (5 + 4) == 9
+    return (5 + 4) == 9;
   },
   
   "is from 1984": function() {
-    return (2 + 2) == 5
+    return (2 + 2) == 5;
   }
 })
