@@ -1,13 +1,33 @@
 <html>
     <head>
-        <title>Leica Test Runner</title>
+      <title>Leica Test Runner</title>
         <script type="text/javascript" src="leica.js"></script>
+        <script type="text/javascript" src="example.js"></script>
         <script type="text/javascript">
 	        window.onload = function() {
-				window.leicaSuites();
-			};
-		</script>
+				    window.leica.run({
+              writeSuite: function(description) {
+                var featureHeader = document.createElement('h2');
+                featureHeader.setAttribute('class', 'feature')
+                featureHeader.innerHTML = description + ":"
+                document.getElementById("results").appendChild(featureHeader);
+              },
+
+              writeFeature: function(description, result) { 
+                var descriptionText = description + "... ";
+                var resultText = result ? "Passed" : "Failed";
+                
+                var resultElement = document.createElement('p');
+                resultElement.setAttribute('class', 'result')
+                resultElement.innerHTML = descriptionText + resultText;
+                document.getElementById("results").appendChild(resultElement);
+              }
+            });
+			    };
+  		</script>
     </head>
     <body>
+      <div id="results">
+      </div>
     </body>
 </html>

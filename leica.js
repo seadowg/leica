@@ -1,25 +1,26 @@
 window.leica = {
-    runner: {
-        writeSuite: function(description) {
-            console.log(description + ":");
-        },
+  suites: [],
+  
+  run: function(runner) {
+    for (var i = 0; i < this.suites.length; i++) {
+      var suite = this.suites[i];
+      runner.writeSuite(suite.description);
 
-        writeFeature: function(description, result) {
-            var resultText = result ? "Passed" : "Failed";
-            console.log("  " + description + "... " + resultText);
+      for (var feature in suite.testObject) {
+        var test = suite.testObject[feature];
+
+        if (test != suite.testObject.setup) {
+          var result = suite.testObject.setup(test);
+          runner.writeFeature(feature, result);
         }
+      }
     }
+  }
 };
 
 window.describe = function(description, testObject) {
-    window.leica.runner.writeSuite(description);
-
-    for (var feature in testObject) {
-        var test = testObject[feature];
-
-        if (test != testObject.setup) {
-            var result = testObject.setup(test);
-            window.leica.runner.writeFeature(feature, result);
-        }
-    }
+  window.leica.suites.push({
+    description: description,
+    testObject: testObject
+  });
 };
