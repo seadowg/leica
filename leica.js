@@ -14,16 +14,16 @@ window.leica = {
         },
 
         finishSuite: function() {
-            this.history.pop();
+            var suiteResults = this.history.pop();
+            this.success += suiteResults.success;
+            this.failure += suiteResults.failure;
         },
 
         reportFeature: function(feature, result) {
             if (result) {
                 this.history[this.depth()].success++;
-                this.success++;
             } else {
                 this.history[this.depth()].failure++;
-                this.failure++;
             }
 
             window.leica.writer.writeFeature(feature, result, this.depth());
